@@ -1,0 +1,200 @@
+{
+  "entities": {
+    "PlayerProfile": {
+      "title": "PlayerProfile",
+      "description": "Registered player contact profile for Somnath Cricket Box & Cafe bookings.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID of the player."
+        },
+        "playerName": {
+          "type": "string",
+          "description": "Player display name (2-60 chars)."
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "10-digit Indian mobile number."
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional Google account email."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "playerName", "mobileNumber", "createdAt", "updatedAt"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Turf slot booking with 50% UPI advance payment details and verification status.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "passCode": {
+          "type": "string",
+          "description": "Unique booking pass identifier (e.g., SSB-7F3A9C)."
+        },
+        "playerName": {
+          "type": "string",
+          "description": "Player name on booking pass."
+        },
+        "playerMobile": {
+          "type": "string",
+          "description": "10-digit player mobile number."
+        },
+        "boxType": {
+          "type": "string",
+          "enum": ["CRICKET", "VOLLEYBALL"],
+          "description": "Selected sports box."
+        },
+        "date": {
+          "type": "string",
+          "description": "Booking date in YYYY-MM-DD format."
+        },
+        "startHour": {
+          "type": "integer",
+          "description": "Starting hour (0-23)."
+        },
+        "durationHours": {
+          "type": "integer",
+          "description": "Duration in hours (1-3)."
+        },
+        "timeLabel": {
+          "type": "string",
+          "description": "Human-readable time slot range."
+        },
+        "tierLabel": {
+          "type": "string",
+          "description": "Applied tariff tier label."
+        },
+        "totalAmount": {
+          "type": "integer",
+          "description": "Total tariff in INR."
+        },
+        "advanceAmount": {
+          "type": "integer",
+          "description": "50% advance paid via UPI in INR."
+        },
+        "balanceAmount": {
+          "type": "integer",
+          "description": "Remaining 50% balance payable at venue in INR."
+        },
+        "utrNumber": {
+          "type": "string",
+          "description": "UPI Transaction Reference / UTR number."
+        },
+        "screenshotBase64": {
+          "type": "string",
+          "description": "Optional compressed JPEG payment screenshot thumbnail encoded as base64."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING_VERIFICATION", "VERIFIED", "REJECTED", "CANCELLED"],
+          "description": "Admin verification status."
+        },
+        "adminNote": {
+          "type": "string",
+          "description": "Optional verification or rejection note from admin."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "passCode",
+        "playerName",
+        "playerMobile",
+        "boxType",
+        "date",
+        "startHour",
+        "durationHours",
+        "timeLabel",
+        "tierLabel",
+        "totalAmount",
+        "advanceAmount",
+        "balanceAmount",
+        "utrNumber",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "SlotLock": {
+      "title": "SlotLock",
+      "description": "Non-PII public schedule lock for an occupied box hour to prevent double booking.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "bookingId": {
+          "type": "string",
+          "description": "Associated booking document ID."
+        },
+        "boxType": {
+          "type": "string",
+          "enum": ["CRICKET", "VOLLEYBALL"]
+        },
+        "date": {
+          "type": "string",
+          "description": "Slot calendar date in YYYY-MM-DD format."
+        },
+        "hour": {
+          "type": "integer",
+          "description": "Locked hour (0-23)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING_VERIFICATION", "VERIFIED"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "bookingId", "boxType", "date", "hour", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/PlayerProfile" },
+      "description": "Private player profile containing name and 10-digit mobile number."
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Player bookings with UPI payment UTR and verification status."
+    },
+    "/slot_locks/{lockId}": {
+      "schema": { "$ref": "#/entities/SlotLock" },
+      "description": "Non-PII hourly slot lock documents keyed by {date}_{boxType}_{hour}."
+    }
+  }
+}

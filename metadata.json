@@ -1,0 +1,6 @@
+{
+  "name": "Somnath Sports",
+  "description": "Mobile booking app for Somnath Cricket Box & Cafe, Bhavnagar with Cricket & Volleyball turf slots, UPI advance payment, booking pass, and admin verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

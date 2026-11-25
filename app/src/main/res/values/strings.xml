@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Somnath Sports</string>
+    <string name="brand_full_title">SOMNATH SPORTS BOOKING – BHAVNAGAR</string>
+    <string name="venue_name">Somnath Cricket Box &amp; Cafe</string>
+    <string name="venue_city">Bhavnagar, Gujarat</string>
+    <string name="helpdesk_phone">94285 05051</string>
+    <string name="helpdesk_tel_uri">tel:9428505051</string>
+    <string name="upi_id">dhandhalavishal@okaxis</string>
+    <string name="logo_content_desc">Somnath Cricket Box and Cafe Bhavnagar logo</string>
+</resources>
